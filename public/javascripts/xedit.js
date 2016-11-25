@@ -33,7 +33,6 @@ $(document).ready(function() {
 
         /**
          Default method to show value in element. Can be overwritten by display option.
-
          @method value2html(value, element)
          **/
         value2html: function(value, element) {
@@ -47,7 +46,6 @@ $(document).ready(function() {
 
         /**
          Gets value from element's html
-
          @method html2value(html)
          **/
         /**
@@ -60,7 +58,6 @@ $(document).ready(function() {
         /**
          Converts value to string.
          It is used in internal comparing (not for sending to server).
-
          @method value2str(value)
          **/
         value2str: function(value) {
@@ -75,7 +72,6 @@ $(document).ready(function() {
 
         /**
          Converts string to value. Used for reading value from 'data-value' attribute.
-
          @method str2value(str)
          **/
         str2value: function(str) {
@@ -88,7 +84,6 @@ $(document).ready(function() {
 
         /**
          Sets value of input.
-
          @method value2input(value)
          @param {mixed} value
          **/
@@ -105,7 +100,6 @@ $(document).ready(function() {
 
         /**
          Returns value of input.
-
          @method input2value()
          **/
         input2value: function() {
@@ -120,7 +114,6 @@ $(document).ready(function() {
 
         /**
          Activates input: sets focus on the first field.
-
          @method activate()
          **/
         activate: function() {
@@ -129,7 +122,6 @@ $(document).ready(function() {
 
         /**
          Attaches handler to submit form in case of 'showbuttons=false' mode
-
          @method autosubmit()
          **/
         autosubmit: function() {
@@ -179,7 +171,6 @@ $(document).ready(function() {
 
         /**
          Default method to show value in element. Can be overwritten by display option.
-
          @method value2html(value, element)
          **/
         value2html: function(value, element) {
@@ -193,7 +184,6 @@ $(document).ready(function() {
 
         /**
          Gets value from element's html
-
          @method html2value(html)
          **/
         /** KOHN TEAM - VALUES ARE DECLARED IN VIEW.HBS**/
@@ -204,7 +194,6 @@ $(document).ready(function() {
         /**
          Converts value to string.
          It is used in internal comparing (not for sending to server).
-
          @method value2str(value)
          **/
         value2str: function(value) {
@@ -219,7 +208,6 @@ $(document).ready(function() {
 
         /**
          Converts string to value. Used for reading value from 'data-value' attribute.
-
          @method str2value(str)
          **/
         str2value: function(str) {
@@ -232,7 +220,6 @@ $(document).ready(function() {
 
         /**
          Sets value of input.
-
          @method value2input(value)
          @param {mixed} value
          **/
@@ -247,7 +234,6 @@ $(document).ready(function() {
 
         /**
          Returns value of input.
-
          @method input2value()
          **/
         input2value: function() {
@@ -260,7 +246,6 @@ $(document).ready(function() {
 
         /**
          Activates input: sets focus on the first field.
-
          @method activate()
          **/
         activate: function() {
@@ -269,7 +254,6 @@ $(document).ready(function() {
 
         /**
          Attaches handler to submit form in case of 'showbuttons=false' mode
-
          @method autosubmit()
          **/
         autosubmit: function() {

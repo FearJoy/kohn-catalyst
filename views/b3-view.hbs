@@ -1,19 +1,25 @@
-
 <a href="/view" class="btn btn-primary">Back to Vetting Home</a>
 <!-- Set this next link to the proper route for Vetting View -->
-<a href="/vettingworksheet/{{_id}}" class="btn btn-primary">Vetting Worksheet View</a>
+<a href="#" class="btn btn-primary">Vetting Information View</a>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
-            <h1>{{application.name.first}} {{application.name.last}}</h1>
+            <h1>{{doc.application.name.first}} {{doc.application.name.last}}</h1>
 
-            <h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h3>
+            <h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a></h3>
 
             <!--VETTING NOTES-->
             <h3>Vetting Notes</h3>
             <div class="form-group">
                 <form>
+                    <table class="table table-striped" id="notes-table">
+                        <thead>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -21,114 +27,140 @@
                             <th class="col-md-6">Note</th>
                             <th class="col-md-6"></th>
                         </tr>
-                    </thead>
-                    <tbody id="notes-body">
-                    <tr>
-                        <td>11/1/2016</td>
-                        <td>This is an example of where vetting agent notes would appear.</td>
+                        </thead>
+                        <tbody id="notes-body">
+                        <tr>
+                            <td>11/1/2016</td>
+                            <td>This is an example of where vetting agent notes would appear.</td>
                         <td>
                             <button type="submit" class="delete-button btn btn-danger">Delete Note</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <button id="addNote" type="submit" class="btn btn-primary">Add Note</button>
-                        </td>
-                        <td>
-                            <textarea id="note" class="form-control" placeholder="Enter Note Here..."></textarea>
-                        </td>
+                        <tr>
+                            <td>
+                                <button id="addNote" type="submit" class="btn btn-primary">Add Note</button>
+                            </td>
+                            <td>
+                                <textarea id="note" class="form-control" placeholder="Enter Note Here..."></textarea>
+                            </td>
                         <td></td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </tr>
+                        </tbody>
+                    </table>
                 </form>
             </div>
-<!--CONTACT INFO-->
+            <!--CONTACT INFO-->
             <h3>Contact</h3>
             <table class="table table-striped">
                 <tbody>
                 <tr>
+                    <td><a id="highlight_" class="highlight" >star</a></td>
                     <td>Name</td>
                     <td>
-                        <a id="name" href="#" data-type="name" data-pk="1" data-url="/edit/name/{{_id}}" data-title="Enter Name"></a>
+                        <a id="name" href="#" data-type="name" data-pk="1" data-url="/edit/name/{{doc._id}}" data-title="Enter Name"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Preferred Name</td>
-                    <td><a href="#" id="pref_name" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.name.preferred" data-title="Enter Preferred Name">{{application.name.preferred}}</a></td>
+                    <td><a href="#" id="pref_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.name.preferred" data-title="Enter Preferred Name">{{doc.application.name.preferred}}</a></td>
                 </tr>
                 <tr>
                     <td>Preferred Phone</td>
-                    <td><a href="#" id="phone_number" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.phone.preferred" data-title="Enter Preferred Phone Number">{{application.phone.preferred}}</a></td>
+                    <td><a href="#" id="phone_number" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.preferred" data-title="Enter Preferred Phone Number">{{doc.application.phone.preferred}}</a></td>
                 </tr>
                 <tr>
                     <td>Other Phone</td>
-                    <td><a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.phone.other" data-title="Enter Other Phone Number">{{application.phone.other}}</a></td>
+                    <td><a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.other" data-title="Enter Other Phone Number">{{doc.application.phone.other}}</a></td>
                 </tr>
                 <tr>
                     <td>Address</td>
                     <td>
-                        <a id="address" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{_id}}" data-title="Enter Address"></a>
+                        <a id="address" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Date Of Birth</td>
-                    <td><a href="#" id="dob" data-type="date" data-pk="1" data-url="/edit/{{_id}}" data-name="application.dob.date" data-title="Select date">{{application.dob.date}}</a></td>
+                    <td><a href="#" id="dob" data-type="date" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
                 </tr>
                 <tr>
                     <td>Marital Status</td>
                     <td>
-                        <a href="#" id="marital_status" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.marital.status" data-title="Enter Marital Status">{{application.marital.status}}</a>
+                        <a href="#" id="marital_status" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.status" data-title="Enter Marital Status">{{doc.application.marital.status}}</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Spouse</td>
                     <td>
-                        <a href="#" id="spouse" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.marital.spouse" data-title="Enter Spouse Name">{{application.marital.spouse}}</a>
+                        <a href="#" id="spouse" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.spouse" data-title="Enter Spouse Name">{{doc.application.marital.spouse}}</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.email" data-title="Enter Email">{{application.email}}</a></td>
+                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a></td>
                 </tr>
                 <tr>
                     <td>Driver's License</td>
-                    <td><a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.driver_license.number" data-title="Enter Driver's License Number">{{application.driver_license.number}}</a></td>
+                    <td><a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.driver_license.number" data-title="Enter Driver's License Number">{{doc.application.driver_license.number}}</a></td>
                 </tr>
                 <tr>
                     <td>Emergency Contact</td>
-                    <td>Name: <a href="#" id="emergency_name" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.emergency_contact.name" data-title="Enter Emergency Contact Name">{{application.emergency_contact.name}}</a>
+                    <td>Name: <a href="#" id="emergency_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.name" data-title="Enter Emergency Contact Name">{{doc.application.emergency_contact.name}}</a>
                         <br>
-                        Relationship: <a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.emergency_contact.relationship" data-title="Enter Emergency Contact Relationship">{{application.emergency_contact.relationship}}</a>
+                        Relationship: <a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.relationship" data-title="Enter Emergency Contact Relationship">{{doc.application.emergency_contact.relationship}}</a>
                         <br>
-                        Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{application.emergency_contact.phone}}</a>
+                        Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Language</td>
-                    <td>{{application.language}}</td>
+                    <td>{{doc.application.language}}</td>
                 </tr>
                 <tr>
                     <td>Veteran</td>
                     <td>
-                        <a href="#" id="veteran" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="application.veteran" data-title="Select Veteran Status"></a>
+                        <a href="#" id="veteran" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.veteran" data-title="Select Veteran Status"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Owns Home</td>
                     <td>
-                        <a href="#" id="owns_home" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="application.owns_home" data-title="Select Home Ownership Status"></a>
+                        <a href="#" id="owns_home" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.owns_home" data-title="Select Home Ownership Status"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Special Circumstances</td>
                     <td>
-                        <a href="#" id="special_circumstances" data-type="textarea" data-pk="1" data-url="/edit/{{_id}}" data-name="application.special_circumstances.note" data-title="Enter Special Circumstances">{{application.special_circumstances.note}}</a>
+                        <a href="#" id="special_circumstances" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.special_circumstances.note" data-title="Enter Special Circumstances">{{doc.application.special_circumstances.note}}</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
+            <!--WORK ITEMS -  PROBABLY NOT NECESSARY TO BE HERE, because it isn't part of the original application.  This section will be necessary in the Single-App-Vetting-View (phone script)
+                        <h3>Work Items</h3>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Kitchen Sink</td>
+                                <td>Sink repair request description.</td>
+                            </tr>
+                            <tr>
+                                <td>Family Room Floor</td>
+                                <td>Floor repair request description.</td>
+                            </tr>
+                            <tr>
+                                <td>Roof</td>
+                                <td>Roof must be patched up.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+            --END WORK ITEMS -->
 <!--WORK ITEMS -  PROBABLY NOT NECESSARY TO BE HERE, because it isn't part of the original application.  This section will be necessary in the Single-App-Vetting-View (phone script)
             <h3>Work Items</h3>
             <table class="table table-striped">
@@ -155,25 +187,25 @@
             </table>
 --END WORK ITEMS -->
 
-<!--PROPERTY ITEMS-->
+            <!--PROPERTY ITEMS-->
             <h3>Property</h3>
             <table class="table table-striped">
                 <tbody>
                 <tr>
                     <td>Home Type</td>
-                    <td><a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.home_type" data-title="Enter Home Type">{{property.home_type}}</a></td>
+                    <td><a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.home_type" data-title="Enter Home Type">{{doc.property.home_type}}</a></td>
                 </tr>
                 <tr>
                     <td>Length of Ownership</td>
-                    <td><a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.ownership_length" data-title="Enter Ownership Length">{{property.ownership_length}}</a></td>
+                    <td><a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.ownership_length" data-title="Enter Ownership Length">{{doc.property.ownership_length}}</a></td>
                 </tr>
                 <tr>
                     <td>Year Constructed</td>
-                    <td><a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.year_constructed" data-title="Enter Year Constructed">{{property.year_constructed}}</a></td>
+                    <td><a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.year_constructed" data-title="Enter Year Constructed">{{doc.property.year_constructed}}</a></td>
                 </tr>
                 <tr>
                     <td>Requested Repairs</td>
-                    <td><a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.requested_repairs" data-title="Enter Requested Repairs">{{property.requested_repairs}}</a></td>
+                    <td><a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.requested_repairs" data-title="Enter Requested Repairs">{{doc.property.requested_repairs}}</a></td>
                 </tr>
                 <tr>
                     <td>Other Residents</td>
@@ -201,47 +233,73 @@
                 </tbody>
             </table>
 
-<!--FINANCIAL INFO-->
+            <!--FINANCIAL INFO-->
             <h3>Finances</h3>
             <table class="table table-striped">
                 <tbody>
                 <tr>
                     <td>Mortgage Payment</td>
-                    <td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{finance.mortgage.payment}}</a></td>
+                    <td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
                 </tr>
                 <tr>
                     <td>Mortgage Up-to-Date</td>
-                    <td><a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.mortgage.up_to_date" data-title="Is Mortgage Up-to-Date?"></a></td>
+                    <td><a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.up_to_date" data-title="Is Mortgage Up-to-Date?"></a></td>
                 </tr>
                 <tr>
                     <td>Income Amount</td>
-                    <td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.income.amount" data-title="Enter Income">{{finance.income.amount}}</a></td>
+                    <td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
                 </tr>
                 <tr>
                     <td>Client Can Contribute Financially</td>
                     <td>
-                        <a href="#" id="f_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.client_can_contribute.value" data-title="Can Client Contribute Financially?"></a>
+                        <a href="#" id="f_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.value" data-title="Can Client Contribute Financially?"></a>
                     </td>
                 </tr>
                 <tr>
+                    <td>Client Financial Contribution</td>
+                    <td><a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.client_can_contribute.description}}</a></td>
                     <td>Client Financial Contribution</td>
                     <td><a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.client_can_contribute.description" data-title="Enter Contribution Description">{{finance.client_can_contribute.description}}</a></td>
                 </tr>
                 <tr>
                     <td>Associates Can Contribute Financially</td>
                     <td>
-                        <a href="#" id="f_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.associates_can_contribute.value" data-title="Can Associates Contribute Financially?"></a>
+                        <a href="#" id="f_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.value" data-title="Can Associates Contribute Financially?"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Associate Financial Contribution</td>
+                    <td><a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.associates_can_contribute.description}}</a></td>
+                    <td>Associate Financial Contribution</td>
                     <td><a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="finance.associates_can_contribute.description" data-title="Enter Contribution Description">{{finance.associates_can_contribute.description}}</a></td>
                 </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped">
+                <tbody>
 				</tbody>
 			</table>
 			<table class="table table-striped">
                 <tbody>
                 <tr>
+                    <td>Assets</td>
+                    <td>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <!--This will iterate over all assets but does not have unique ids, which means only 1st is editable-->
+                            {{#each finance.assets.name}}
+                                <tr>
+                                    <td><a href="#" class="asset_name" id="f_asset_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../_id}}" data-name="finance.assets.name">{{this}}</a></td>
+                                    <td><a href="#" class="asset_value" id="f_asset_value_{{@index}}" data-type="text" data-pk="{{lookup ../finance.assets.value @index}}" data-url="/edit/array/{{../_id}}" data-name="finance.assets.value">{{lookup ../finance.assets.value @index}}</a></td>
+                                </tr>
+                            {{/each}}
+                        </table>
+                    </td>
                     <td>Assets</td>
                     <td>
                         <table class="table table-striped">
@@ -263,39 +321,47 @@
                 </tbody>
             </table>
 
-<!--LABOR HELP-->
+            <!--LABOR HELP-->
             <h3>Assistance</h3>
             <table class="table table-striped">
                 <tbody>
                 <tr>
                     <td>Client Can Contribute Labor</td>
                     <td>
-                        <a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="property.client_can_contribute.value" data-title="Can Client Contribute Labor?"></a>
+                        <a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.value" data-title="Can Client Contribute Labor?"></a>
                     </td>
                 </tr>
                 <tr>
+                    <td>Client Labor Contribution</td>
+                    <td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a></td>
                     <td>Client Labor Contribution</td>
                     <td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{property.client_can_contribute.description}}</a></td>
                 </tr>
                 <tr>
                     <td>Associates Can Contribute Labor</td>
                     <td>
-                        <a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="property.associates_can_contribute.value" data-title="Can Associates Contribute Labor?"></a>
+                        <a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.value" data-title="Can Associates Contribute Labor?"></a>
                     </td>
                 </tr>
                 <tr>
+                    <td>Associate Labor Contribution</td>
+                    <td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a></td>
                     <td>Associate Labor Contribution</td>
                     <td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{property.associates_can_contribute.description}}</a></td>
                 </tr>
                 <tr>
                     <td>Involved with a Faith-Based Organization</td>
                     <td>
-                        <a href="#" id="fbo_help" data-type="select" data-pk="1" data-url="/edit/{{_id}}" data-name="recruitment.fbo_help" data-title="Does client belong to an FBO?"></a>
+                        <a href="#" id="fbo_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_help" data-title="Does client belong to an FBO?"></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Client Contribution</td>
-                    <td><a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{_id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{recruitment.fbo_name}}</a></td>
+                    <td><a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{doc.recruitment.fbo_name}}</a></td>
+                </tr>
+                <tr>
+                    <td>Requested Other Help</td>
+                    <td><a href="#" id="request_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.requested_other_help.value" data-title="Client Requested Other Help?"></a></td>
                 </tr>
                 <tr>
                     <td>Requested Other Help</td>
@@ -308,6 +374,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/javascript/setFlags.js"></script>
 <script>
     /**
      * Handles the back button located at the top of the page
@@ -322,44 +389,47 @@
      *  to the handlebars template system
      */
     $(document).ready(function() {
-        $('#address').editable({
-            value: {
-                line_1: '{{application.address.line_1}}',
-                line_2: '{{application.address.line_2}}',
-                city: '{{application.address.city}}',
-                state: '{{application.address.state}}',
-                zip: '{{application.address.zip}}'
-            }
-        });
-
-        $('#name').editable({
-            value: {
-                first: '{{application.name.first}}',
-                middle: '{{application.name.middle}}',
-                last: '{{application.name.last}}'
-            }
-        });
-
-        $('#veteran').editable({
-            value: '{{application.veteran}}',
+        $('.highlight').editable({
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
+        })
+        $('#address').editable({
+            value: {
+                line_1: '{{doc.application.address.line_1}}',
+                line_2: '{{doc.application.address.line_2}}',
+                city: '{{doc.application.address.city}}',
+                state: '{{doc.application.address.state}}',
+                zip: '{{doc.application.address.zip}}'
+            }
         });
-
-        $('#mortgage').editable({
-            value: '{{finance.mortgage.up_to_date}}',
+        $('#name').editable({
+            value: {
+                first: '{{doc.application.name.first}}',
+                middle: '{{doc.application.name.middle}}',
+                last: '{{doc.application.name.last}}'
+            }
+        });
+        $('#veteran').editable({
+            value: '{{doc.application.veteran}}',
             source:
                     [
                         {value: 'true', text: 'True'},
                         {value: 'false', text: 'False'}
                     ]
         });
-
+        $('#mortgage').editable({
+            value: '{{doc.finance.mortgage.up_to_date}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
         $('#status').editable({
-            value: '{{status}}',
+            value: '{{doc.status}}',
             source:
                     [
                         {value: 'discuss', text: 'On Hold - Pending Discussion'},
@@ -374,67 +444,60 @@
                         {value: 'project', text: 'Approved Project'}
                     ]
         });
-
         $('#owns_home').editable({
-            value: '{{application.owns_home}}',
+            value: '{{doc.application.owns_home}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#f_client_can_contrib').editable({
-            value: '{{finance.client_can_contribute.value}}',
+            value: '{{doc.finance.client_can_contribute.value}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#f_associate_can_contrib').editable({
-            value: '{{finance.associates_can_contribute.value}}',
+            value: '{{doc.finance.associates_can_contribute.value}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#l_client_can_contrib').editable({
-            value: '{{property.client_can_contribute.value}}',
+            value: '{{doc.property.client_can_contribute.value}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#l_associate_can_contrib').editable({
-            value: '{{property.associates_can_contribute.value}}',
+            value: '{{doc.property.associates_can_contribute.value}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#request_help').editable({
-            value: '{{finance.requested_other_help.value}}',
+            value: '{{doc.finance.requested_other_help.value}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
-
         $('#fbo_help').editable({
-            value: '{{recruitment.fbo_help}}',
+            value: '{{doc.recruitment.fbo_help}}',
             source:
                     [
-                        {value: 'true', text: 'true'},
-                        {value: 'false', text: 'false'}
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
                     ]
         });
 
@@ -489,5 +552,4 @@
         });
 
     });
-
 </script>

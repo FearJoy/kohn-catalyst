@@ -18,6 +18,20 @@ router.post('/', function(req, res) {
 });
 
 /**
+    edit highlight features
+ **/
+router.post('/highlight/:id', api.toggleHighlight, function(req, res) {
+
+    if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.status(200).send({ status: 'success' });
+    }
+
+})
+
+/**
  * Get Updated Data
  * Most fields can now be updated using the API
  **/
@@ -93,11 +107,11 @@ router.post('/name/:id', function(req, res) {
     DocumentPackage.update(
         {_id: ObjectId(req.params.id)},
         { $set:
-        {
-            "application.name.first": req.body["value[first]"],
-            "application.name.middle": req.body["value[middle]"],
-            "application.name.last": req.body["value[last]"]
-        }
+            {
+                "application.name.first": req.body["value[first]"],
+                "application.name.middle": req.body["value[middle]"],
+                "application.name.last": req.body["value[last]"]
+            }
         },
         function(err)
         {

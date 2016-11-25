@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
+var HighlightPackage = require('../models/highlightPackage');
 var api = require('../controllers/api');
 
 
@@ -112,26 +113,37 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
 });
 
 /* Route to specific application by Object ID */
-router.get('/:id', function(req, res) {
+router.get('/:id', function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
 
     /* search by _id. */
     Promise.props({
-        application: DocumentPackage.find({_id: ObjectId(req.params.id)}).lean().execAsync()
+        highlight: HighlightPackage.findOne({ 'reference' : ObjectId(req.params.id)}).lean().execAsync(),
+        doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync()
     })
-        .then(function(result) {
+        .then(function(results) {
+            // console.log(results);
             //format birth date for display
-            if(result.application[0].application.dob.date != null) {
-                var dobYear = result.application[0].application.dob.date.getFullYear();
-                //get month and day with padding since they are 0 indexed
-                var dobDay = ( "00" + result.application[0].application.dob.date.getDate()).slice(-2);
-                var dobMon = ("00" + (result.application[0].application.dob.date.getMonth()+1)).slice(-2);
+            // if(results.application.application.dob.date != null) {
+            //     console.log('IN IF OMFG!!!!!!!!!!!!!!!!');
+            //     var dobYear = results.application.application.dob.date.getFullYear();
+            //     //get month and day with padding since they are 0 indexed
+            //     var dobDay = ( "00" + results.application.application.dob.date.getDate()).slice(-2);
+            //     var dobMon = ("00" + (results.application.application.dob.date.getMonth()+1)).slice(-2);
+            //
+            //     results.application.application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
+            // }
+            // results['doc'] = results.application;
+            // results['highlight'] = results.highlight;
 
-                result.application[0].application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
-            }
-            res.locals.layout = 'b3-layout';                // Change default from layout.hbs to b3-layout.hbs
-            res.render('b3-view', result.application[0]);   // Change view.hbs to b3-view.hbs
+
+
+            res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
+            // res.locals.results = results.application[0];
+            // res.locals.results = results.highlight[0];
+            console.log(results);
+            res.render('b3-view', results);
         })
         .catch(function(err) {
             console.error(err);

@@ -32,6 +32,7 @@ var DocumentPackageSchema = new Schema({
     status:         String,
     created:        Date,
     updated:        { type: Date, default: Date.now},
+    highlightPackage: { type: ObjectId },
     // Codes needed are:
     // Code - description
     // new - new document package, has yet to be reviewed

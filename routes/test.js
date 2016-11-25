@@ -74,5 +74,13 @@ router.get('/all', api.getAllDocuments, function(req, res) {
     res.render('application-list', context);
 });
 
+router.route('/highlight/:id')
+    .get(api.getHighlightsById, function(req, res) {
+        res.json(res.locals.results);
+    })
+    .put(api.toggleHighlight, function(req, res) {
+        res.json(res.locals.results);
+    })
+
 
 module.exports = router;

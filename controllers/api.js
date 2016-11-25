@@ -9,6 +9,7 @@
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
+var HighlightPackage = require('../models/highlightPackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -85,8 +86,7 @@ module.exports = {
             document: DocumentPackage.findById(req.params.id).lean().execAsync()
         })
             .then(function(results) {
-                // TODO: Confirm true/false is correct
-                if (results) {
+                if (!results) {
                     console.log('[ API ] getDocumentById :: Documents package found: FALSE');
                 }
                 else {
@@ -122,8 +122,7 @@ module.exports = {
             project: DocumentPackage.find({status: "project"}).lean().execAsync()
         })
             .then(function (results) {
-                // TODO: Confirm true/false is correct
-                if (results) {
+                if (!results) {
                     console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
                 }
                 else {
@@ -146,7 +145,7 @@ module.exports = {
         console.log('[ API ] postDocument :: Call invoked');
 
         // For debugging
-        var debug = 1;
+        var debug = 0;
         if (debug == 1) {
             console.log(req.body);
         }
@@ -160,16 +159,33 @@ module.exports = {
         // Instead we will do it in one line
         var doc = new DocumentPackage(req.body);
 
-        // Save it to the database with a callback to handle flow control
-        doc.save(function (err, doc, numAffected) {
+        // Create a corresponding highlight package
+        var highlight = new HighlightPackage();
+
+        // Make each reference the others ObectId
+        // TODO: Add support for work items and site assessment
+        doc.highlightPackage = highlight._id;
+        highlight.documentPackage = doc._id;
+
+        // Save the document package to the database with a callback to handle flow control
+        doc.saveAsync(function (err, doc, numAffected) {
             if (err) {
                 console.error(err);
             }
             else if (numAffected == 1) {
                 console.log('[ API ] postDocument :: Document created with _id: ' + doc._id);
-                res.status(200);
-                console.log("[ API ] postDocument :: Status code is " + res.statusCode);
-                res.send({status: 200});
+            }
+        });
+
+        // Save the highlight package to the database with a callback to handle flow control
+        highlight.saveAsync(function (err, highlight, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
+                console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
+                res.send( { status : 200 } );
             }
         });
     },
@@ -187,13 +203,19 @@ module.exports = {
         var updates = {};
         updates[req.body.name] = req.body.value;
         // Record Update time
+        //filters
+        var conditions = {};
+        conditions['_id'] = mongoose.Types.ObjectId(req.params.id);
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
         updates['updated'] = Date.now();
         console.log(updates);
 
         Promise.props({
             doc: DocumentPackage.findOneAndUpdate(
                 // Condition
-                {_id: req.params.id},
+                conditions,
                 // Updates
                 {
                     // $set: {name: value}
@@ -230,6 +252,174 @@ module.exports = {
                 console.error(err);
             })
             .catch(next);
+    },
+
+    /**
+     * This will handle updates for elements in arrays
+     */
+    putUpdateArray: function(req, res, next) {
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] putUpdateArray :: Call invoked with _id: ' + req.params.id
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value + ' | current value: ' + req.body.pk);
+        //the $ holds the index of the element
+        var updateField = req.body.name + ".$";
+        var updates = {};
+        updates[updateField] = req.body.value;
+        // Record Update time
+        updates['updated'] = Date.now();
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.params.id;
+        conditions[req.body.name] = req.body.pk;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        console.log(updates);
+
+        Promise.props({
+            doc: DocumentPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                // TODO: Confirm true/false is correct
+                console.log(results);
+                if (results.doc != null) {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                    res.locals.status = '200';
+                }
+                else {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                    res.locals.status = '500';
+                }
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+    getHighlightsById: function(req, res, next) {
+        console.log('[ API ] getHighlightsById :: Call invoked with highlight package _id: ' + req.params.id);
+        Promise.props({
+            highlight: HighlightPackage.findById(req.params.id).lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('[ API ] getHighlightsById :: Highlight package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getHighlightsById :: Highlight package found: TRUE');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+    toggleHighlight: function(req, res, next) {
+        console.log('[ API ] toggleHighlight :: Call invoked with highlightPackage _id: %s | name: %s | value: %s',
+            req.params.id, req.body.name, req.body.value);
+        // Confirm a JSON {key:value} pair was sent
+        if (req.accepts('application/json')) {
+            var fetchDocument = Promise.props({
+                highlight: HighlightPackage.findById(req.params.id).lean().execAsync()
+            })
+                .then(function (results) {
+                    if (!results) {
+                        console.log('[ API ] toggleHighlight :: Highlight package found: FALSE');
+                    }
+                    else {
+                        console.log('[ API ] toggleHighlight :: Highlight package found: TRUE');
+                    }
+
+                    // Build the name:value pairs to be updated
+                    // Since there is only one name and one value, we can use the method below
+                    var updates = {};
+                    updates[req.body.name] = req.body.value;
+
+                    // Record Update time
+                    updates['updated'] = Date.now();
+                    console.log(updates);
+
+                    // Build variables and attach to the returned query results
+                    results.id = req.params.id;
+                    results.name = req.body.name;
+                    results.value = req.body.value;
+                    results.updates = updates;
+
+                    return results;
+                })
+                .catch(function (err) {
+                    console.error(err);
+                })
+                .catch(next);
+
+            fetchDocument.then(function(results) {
+                Promise.props({
+                    highlight: HighlightPackage.findOneAndUpdate(
+                        // Condition
+                        {_id: results.id},
+                        // Updates
+                        {
+                            $set: results.updates
+                        },
+                        // Options
+                        {
+                            // new - defaults to false, returns the modified document when true, or the original when false
+                            new: true,
+                            // runValidators - defaults to false, make sure the data fits the model before applying the update
+                            runValidators: true
+                        }
+                    ).execAsync()
+
+                })
+                    .then(function(results){
+                        if (!results) {
+                            console.log('[ API ] toggleHighlight :: Highlight package updated: FALSE');
+
+                        }
+                        else {
+                            console.log('[ API ] toggleHighlight :: Highlight package updated: TRUE');
+                            res.locals.results = results;
+                            //sending a status of 200 for now
+                            res.locals.status = '200';
+                        }
+                    })
+                    .catch(function (err) {
+                        console.error(err);
+                    })
+                    .catch(next);
+            })
+        }
+    },
     },
 
     /**
